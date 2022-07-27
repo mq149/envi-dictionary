@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::apiResource('vietnamese', \App\Http\Controllers\Api\VietnameseController::class)
+    ->only('index', 'show');
+Route::apiResource('english', \App\Http\Controllers\Api\EnglishController::class)
+    ->only('index', 'show');
