@@ -1,14 +1,18 @@
 <template>
-    <div class="word my-2 p-1 shadow bg-stone-100">
-        <p @click="select(word)">{{ word.word }}</p>
+    <div @click="select(word)" class="word my-1 p-1"
+        v-bind:class="[ { 'bg-sky-100': selected }, 'bg-stone-100' ]">
+        <p>{{ word.word }}</p>
     </div>
 </template>
 
 <script>
+import {onUpdated} from "vue";
+
 export default {
     name: "WordComponent",
     props: {
-        word: Object
+        word: Object,
+        selected: Boolean
     },
     emits: [
         "show-meaning",

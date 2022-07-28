@@ -1,7 +1,10 @@
 <template>
-    <div class="grow h-full bg-blue-100">
-        Meaning of the word
-        <span class="m-2 p-2" v-html="word.html"></span>
+    <div class="grow h-full w-3/4">
+        <div class="meaning
+                    h-full m-2 p-2
+                    scrolling-component overflow-y-auto"
+             ref="scrollComponent"
+             v-html="word.html"></div>
     </div>
 </template>
 

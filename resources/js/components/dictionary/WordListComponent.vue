@@ -1,9 +1,10 @@
 <template>
-    <div class="scrolling-component overflow-y-auto h-full w-64" ref="scrollComponent">
+    <div class="scrolling-component overflow-y-auto h-full w-1/4" ref="scrollComponent">
         <word-component
             v-for="(word, index) in words"
             :word="word"
             :key="index"
+            :selected="selectedWord === word"
             @show-meaning="showMeaning"
         />
     </div>
@@ -14,11 +15,12 @@ import WordComponent from "./WordItemComponent";
 
 export default {
     name: "WordListComponent",
-    props: {
-        words: Array
-    },
     components: {
         WordComponent
+    },
+    props: {
+        words: Array,
+        selectedWord: Object
     },
     methods: {
         showMeaning(word) {
