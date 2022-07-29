@@ -16,17 +16,9 @@
     <script defer src="{{asset('js/app.js')}}"></script>
 </head>
 <body class="font-sans antialiased">
-<div id="app" class="flex flex-col h-screen bg-gray-100">
-
-    <!-- Page Heading -->
-{{--    <header class="bg-white shadow">--}}
-{{--        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">--}}
-{{--            {{ $header }}--}}
-{{--        </div>--}}
-{{--    </header>--}}
-
-<!-- Page Content -->
-    <main class="flex-1">
+<div id="app" class="h-screen w-screen bg-gray-100">
+    <!-- Page Content -->
+    <main class="h-full w-full">
         {{ $slot ?? '' }}
     </main>
 </div>

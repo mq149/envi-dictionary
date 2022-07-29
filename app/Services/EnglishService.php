@@ -12,7 +12,7 @@ class EnglishService
 
     public function index(Request $request)
     {
-        if ($request->has('text')) {
+        if ($request->has('text') && $request->get('text', '') != '') {
             return $this->lookUp((new EnglishWord()), $request->get('text'));
         }
         return EnglishWord::query()->paginate(20);

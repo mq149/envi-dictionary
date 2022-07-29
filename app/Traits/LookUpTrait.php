@@ -15,13 +15,22 @@ trait LookUpTrait
         if ($target != null) {
             $next = $model::query()
                 ->where('id', '>', ($target->id))
-                ->orderBy('id')
-                ->limit($resultsAfter);
-            return $model::query()
+                ->orderBy('id');
+            $nextCount = $next->limit($resultsAfter)->count();
+            $prev = $model::query()
                 ->where('id', '<=', ($target->id))
-                ->orderByDesc('id')
-                ->limit($resultsBefore)
-                ->union($next)
+                ->orderByDesc('id');
+            $prevCount = $prev->limit($resultsBefore)->count();
+
+            if ($nextCount < $resultsBefore) {
+                $resultsAfter += $resultsBefore - $nextCount;
+            } else if ($prevCount < $resultsAfter) {
+                $resultsBefore += $resultsAfter - $prevCount;
+            }
+
+            return $prev
+                ->limit($resultsAfter)
+                ->union($next->limit($resultsBefore))
                 ->select()
                 ->orderBy('id')
                 ->simplePaginate($resultsBefore + $resultsAfter + 1);

@@ -1,12 +1,12 @@
 <template>
-    <div class="h-screen w-screen flex justify-center items-center bg-gray-300">
-        <div class="dictionary-container
-                    flex flex-col
-                    h-3/6 w-3/4 p-3
-                    bg-white rounded">
+    <div class="flex flex-col justify-center items-center
+                h-full w-full">
+        <div class="flex flex-col
+                    h-1/2 w-4/6 p-3
+                    bg-white rounded shadow">
             <div class="flex flex-row
                         align-middle
-                        w-full">
+                        h-10 w-full">
                 <div class="language-select w-1/4">
                     <select name="language" id="language"
                             class="h-full w-full
@@ -42,6 +42,10 @@
                     :word="selectedWord"
                 />
             </div>
+        </div>
+        <div class="w-4/6 px-3">
+            <a class="language" href="#">Vietnamese</a>
+            <a class="language" href="#">English</a>
         </div>
     </div>
 </template>

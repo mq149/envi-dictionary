@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,3 +24,10 @@ Route::get('/dictionary', function () {
 
 Route::view('/{any}', 'dictionary')
     ->where('any', '.*');
+
+Route::get('/language/{locale}', function ($locale) {
+    if (! in_array($locale, ['en', 'vi'])) {
+        abort(400);
+    }
+    App::setLocale($locale);
+});

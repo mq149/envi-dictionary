@@ -19992,13 +19992,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "h-screen w-screen flex justify-center items-center bg-gray-300"
+  "class": "flex flex-col justify-center items-center h-full w-full"
 };
 var _hoisted_2 = {
-  "class": "dictionary-container flex flex-col h-3/6 w-3/4 p-3 bg-white rounded"
+  "class": "flex flex-col h-1/2 w-4/6 p-3 bg-white rounded shadow"
 };
 var _hoisted_3 = {
-  "class": "flex flex-row align-middle w-full"
+  "class": "flex flex-row align-middle h-10 w-full"
 };
 var _hoisted_4 = {
   "class": "language-select w-1/4"
@@ -20024,6 +20024,19 @@ var _hoisted_8 = {
 var _hoisted_9 = {
   "class": "flex flex-row overflow-hidden"
 };
+
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "w-4/6 px-3"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  "class": "language",
+  href: "#"
+}, "Vietnamese"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  "class": "language",
+  href: "#"
+}, "English")], -1
+/* HOISTED */
+);
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_word_list_component = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("word-list-component");
 
@@ -20066,7 +20079,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     word: $data.selectedWord
   }, null, 8
   /* PROPS */
-  , ["word"])])])]);
+  , ["word"])])]), _hoisted_10]);
 }
 
 /***/ }),

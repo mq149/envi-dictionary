@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    a.language {
+        @apply text-sm underline mr-1
+    }
+}
