@@ -25,7 +25,7 @@
 {{--        </div>--}}
 {{--    </header>--}}
 
-    <!-- Page Content -->
+<!-- Page Content -->
     <main class="flex-1">
         {{ $slot ?? '' }}
     </main>

@@ -5,6 +5,7 @@
             :word="word"
             :key="index"
             :selected="selectedWord === word"
+            :look-up-text="lookUpText"
             @show-meaning="showMeaning"
         />
     </div>
@@ -20,11 +21,12 @@ export default {
     },
     props: {
         words: Array,
-        selectedWord: Object
+        selectedWord: Object,
+        lookUpText: String
     },
     methods: {
         showMeaning(word) {
-            this.$emit("show-meaning", word);
+            this.$emit("show-meaning", word)
         }
     }
 }

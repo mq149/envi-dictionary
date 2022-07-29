@@ -1,5 +1,5 @@
 <template>
-    <div class="grow h-full w-3/4">
+    <div class="h-full w-3/4">
         <div class="meaning
                     h-full m-2 p-2
                     scrolling-component overflow-y-auto"

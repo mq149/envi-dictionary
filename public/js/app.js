@@ -19797,13 +19797,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
                 _this2.words = words;
+                _this2.selectedWord = _this2.words[0] || {};
 
-              case 4:
+              case 5:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
+      }))();
+    },
+    lookUp: function lookUp() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var _useDictionary2, words, lookUpFromDictionary;
+
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                console.log(_this3.lookUpWord);
+                _useDictionary2 = (0,_composables_dictionary__WEBPACK_IMPORTED_MODULE_2__["default"])(_this3.language), words = _useDictionary2.words, lookUpFromDictionary = _useDictionary2.lookUpFromDictionary;
+                _context3.next = 4;
+                return lookUpFromDictionary(_this3.lookUpWord);
+
+              case 4:
+                _this3.words = words;
+
+                _this3.$forceUpdate();
+
+              case 6:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
       }))();
     }
   },
@@ -19811,35 +19840,52 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       words: (0,vue__WEBPACK_IMPORTED_MODULE_3__.ref)([]),
       selectedWord: (0,vue__WEBPACK_IMPORTED_MODULE_3__.ref)({}),
-      language: (0,vue__WEBPACK_IMPORTED_MODULE_3__.ref)('vi-en')
+      language: (0,vue__WEBPACK_IMPORTED_MODULE_3__.ref)('vi-en'),
+      lookUpWord: ''
     };
   },
   mounted: function mounted() {
-    var _this3 = this;
-
-    this.getDictionaryWords().then(function () {
-      _this3.selectedWord = _this3.words[0] || {};
-    });
+    this.getDictionaryWords();
   },
   watch: {
     language: function language(newVal, oldVal) {
       var _this4 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
                 console.log("Switched from ".concat(oldVal, " to ").concat(newVal));
-                _context3.next = 3;
+                _context4.next = 3;
                 return _this4.getDictionaryWords();
 
               case 3:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3);
+        }, _callee4);
+      }))();
+    },
+    lookUpWord: function lookUpWord(newVal, oldVal) {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                console.log("Lookup word is: ".concat(newVal));
+                _context5.next = 3;
+                return _this5.lookUp();
+
+              case 3:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
       }))();
     }
   }
@@ -19878,18 +19924,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "WordComponent",
   props: {
     word: Object,
-    selected: Boolean
+    selected: Boolean,
+    lookUpText: String
   },
   emits: ["show-meaning"],
   methods: {
     select: function select(word) {
       this.$emit("show-meaning", word);
+    }
+  },
+  computed: {
+    getBackgroundColor: function getBackgroundColor() {
+      return this.selected ? 'bg-sky-200' : this.lookUpText !== "" && this.word.word.includes(this.lookUpText.trim()) ? 'bg-sky-100' : 'bg-stone-100';
     }
   }
 });
@@ -19916,7 +19966,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     words: Array,
-    selectedWord: Object
+    selectedWord: Object,
+    lookUpText: String
   },
   methods: {
     showMeaning: function showMeaning(word) {
@@ -19941,10 +19992,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "h-full flex justify-center items-center bg-gray-300"
+  "class": "h-screen w-screen flex justify-center items-center bg-gray-300"
 };
 var _hoisted_2 = {
-  "class": "dictionary-container flex flex-col h-3/6 lg:w-1/2 md:w-3/4 p-3 bg-white rounded"
+  "class": "dictionary-container flex flex-col h-3/6 w-3/4 p-3 bg-white rounded"
 };
 var _hoisted_3 = {
   "class": "flex flex-row align-middle w-full"
@@ -19967,20 +20018,9 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 );
 
 var _hoisted_7 = [_hoisted_5, _hoisted_6];
-
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_8 = {
   "class": "word-look-up flex flex-row h-full flex-grow"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  "class": "h-full px-1 flex-grow border-2 border-stone-100 rounded",
-  type: "text",
-  placeholder: "Look up..."
-}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  type: "button",
-  "class": "p-2 bg-sky-500 font-bold text-sm text-white"
-}, "Look up")], -1
-/* HOISTED */
-);
-
+};
 var _hoisted_9 = {
   "class": "flex flex-row overflow-hidden"
 };
@@ -19998,15 +20038,31 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, _hoisted_7, 32
   /* HYDRATE_EVENTS */
-  )]), _hoisted_8]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_word_list_component, {
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "class": "h-full px-1 flex-grow border-2 border-stone-100 rounded",
+    type: "text",
+    placeholder: "Look up...",
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $data.lookUpWord = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.lookUpWord]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "button",
+    "class": "p-2 bg-sky-500 font-medium text-base text-white",
+    onClick: _cache[2] || (_cache[2] = function () {
+      return $options.lookUp && $options.lookUp.apply($options, arguments);
+    })
+  }, "Look up ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_word_list_component, {
     words: $data.words,
     "selected-word": $data.selectedWord,
-    onShowMeaning: _cache[1] || (_cache[1] = function ($event) {
+    "look-up-text": $data.lookUpWord,
+    onShowMeaning: _cache[3] || (_cache[3] = function ($event) {
       return $options.showMeaning($event);
     })
   }, null, 8
   /* PROPS */
-  , ["words", "selected-word"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_meaning_component, {
+  , ["words", "selected-word", "look-up-text"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_meaning_component, {
     word: $data.selectedWord
   }, null, 8
   /* PROPS */
@@ -20029,7 +20085,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "grow h-full w-3/4"
+  "class": "h-full w-3/4"
 };
 var _hoisted_2 = ["innerHTML"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -20062,9 +20118,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $options.select($props.word);
     }),
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["word my-1 p-1", [{
-      'bg-sky-100': $props.selected
-    }, 'bg-stone-100']])
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["word my-1 p-1", $options.getBackgroundColor])
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.word.word), 1
   /* TEXT */
   )], 2
@@ -20099,10 +20153,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       word: word,
       key: index,
       selected: $props.selectedWord === word,
+      "look-up-text": $props.lookUpText,
       onShowMeaning: $options.showMeaning
     }, null, 8
     /* PROPS */
-    , ["word", "selected", "onShowMeaning"]);
+    , ["word", "selected", "look-up-text", "onShowMeaning"]);
   }), 128
   /* KEYED_FRAGMENT */
   ))], 512
@@ -20197,13 +20252,13 @@ function useDictionary() {
   var WORD_URI = function WORD_URI() {
     switch (language) {
       case 'en-vi':
-        return '/api/english/';
+        return '/api/english';
 
       case 'vi-en':
-        return '/api/vietnamese/';
+        return '/api/vietnamese';
 
       default:
-        return '/api/vietnamese/';
+        return '/api/vietnamese';
     }
   };
 
@@ -20264,11 +20319,40 @@ function useDictionary() {
     };
   }();
 
+  var lookUpFromDictionary = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(text) {
+      var url, response;
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              url = WORD_URI() + "?text=".concat(text);
+              _context3.next = 3;
+              return axios__WEBPACK_IMPORTED_MODULE_1___default().get(url);
+
+            case 3:
+              response = _context3.sent;
+              words.value = response.data.data;
+
+            case 5:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+
+    return function lookUpFromDictionary(_x2) {
+      return _ref3.apply(this, arguments);
+    };
+  }();
+
   return {
     words: words,
     word: word,
     getWords: getWords,
-    getWord: getWord
+    getWord: getWord,
+    lookUpFromDictionary: lookUpFromDictionary
   };
 }
 

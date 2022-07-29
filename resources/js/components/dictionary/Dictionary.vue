@@ -1,8 +1,8 @@
 <template>
-    <div class="h-full flex justify-center items-center bg-gray-300">
+    <div class="h-screen w-screen flex justify-center items-center bg-gray-300">
         <div class="dictionary-container
                     flex flex-col
-                    h-3/6 lg:w-1/2 md:w-3/4 p-3
+                    h-3/6 w-3/4 p-3
                     bg-white rounded">
             <div class="flex flex-row
                         align-middle
@@ -20,8 +20,14 @@
                             flex flex-row
                             h-full flex-grow">
                     <input class="h-full px-1 flex-grow
-                                  border-2 border-stone-100 rounded" type="text" placeholder="Look up...">
-                    <button type="button" class="p-2 bg-sky-500 font-bold text-sm text-white">Look up</button>
+                                  border-2 border-stone-100 rounded"
+                           type="text"
+                           placeholder="Look up..."
+                           v-model="lookUpWord">
+                    <button type="button"
+                            class="p-2 bg-sky-500 font-medium text-base text-white"
+                            @click="lookUp">Look up
+                    </button>
                 </div>
             </div>
             <div class="flex flex-row
@@ -29,6 +35,7 @@
                 <word-list-component
                     :words="words"
                     :selected-word="selectedWord"
+                    :look-up-text="lookUpWord"
                     @showMeaning="showMeaning($event)"
                 />
                 <meaning-component
@@ -52,35 +59,46 @@ export default {
     },
     methods: {
         showMeaning(word) {
-            this.selectedWord = word;
-            this.$forceUpdate();
+            this.selectedWord = word
+            this.$forceUpdate()
         },
         async switchLanguage(event) {
-            this.language = event.target.value;
-            this.$forceUpdate();
+            this.language = event.target.value
+            this.$forceUpdate()
         },
         async getDictionaryWords() {
-            const {words, getWords} = useDictionary(this.language);
-            await getWords();
-            this.words = words;
+            const {words, getWords} = useDictionary(this.language)
+            await getWords()
+            this.words = words
+            this.selectedWord = this.words[0] || {}
+        },
+        async lookUp() {
+            console.log(this.lookUpWord)
+            const {words, lookUpFromDictionary} = useDictionary(this.language)
+            await lookUpFromDictionary(this.lookUpWord)
+            this.words = words
+            this.$forceUpdate()
         }
     },
     data() {
         return {
             words: ref([]),
             selectedWord: ref({}),
-            language: ref('vi-en')
+            language: ref('vi-en'),
+            lookUpWord: ''
         }
     },
     mounted() {
-        this.getDictionaryWords().then(() => {
-            this.selectedWord = this.words[0] || {};
-        });
+        this.getDictionaryWords()
     },
     watch: {
         async language(newVal, oldVal) {
-            console.log(`Switched from ${oldVal} to ${newVal}`);
-            await this.getDictionaryWords();
+            console.log(`Switched from ${oldVal} to ${newVal}`)
+            await this.getDictionaryWords()
+        },
+        async lookUpWord(newVal, oldVal) {
+            console.log(`Lookup word is: ${newVal}`)
+            await this.lookUp()
         }
     }
 }
