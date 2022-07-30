@@ -1,4 +1,6 @@
 const mix = require('laravel-mix');
+require('laravel-vue-lang/mix');
+const path = require("path");
 
 /*
  |--------------------------------------------------------------------------
@@ -11,9 +13,25 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js').vue()
+mix.js('resources/js/app.js', 'public/js')
+    .vue()
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
         require('autoprefixer')
-    ]);
+    ])
+    .webpackConfig({
+        resolve: {
+            alias: {
+                '@lang': path.resolve('./resources/lang'),
+            },
+        },
+        module: {
+            rules: [
+                {
+                    test: /resources[\\\/]lang.+\.(php)$/,
+                    loader: 'php-array-loader',
+                },
+            ],
+        },
+    });

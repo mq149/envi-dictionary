@@ -25,7 +25,7 @@ Route::get('/dictionary', function () {
 Route::view('/{any}', 'dictionary')
     ->where('any', '.*');
 
-Route::get('/language/{locale}', function ($locale) {
+Route::get('/set-locale/{locale}', function ($locale) {
     if (! in_array($locale, ['en', 'vi'])) {
         abort(400);
     }

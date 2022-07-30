@@ -1,5 +1,8 @@
 <template>
-    <div class="scrolling-component overflow-y-auto h-full w-1/4" ref="scrollComponent">
+    <div class="scrolling-component overflow-y-auto
+                h-full w-1/4
+                px-2"
+         ref="scrollComponent">
         <word-component
             v-for="(word, index) in words"
             :word="word"

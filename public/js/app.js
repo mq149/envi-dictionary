@@ -19750,11 +19750,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+ // import {devDependencies} from "../../../../package.json";
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     WordListComponent: _WordListComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
     MeaningComponent: _MeaningComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: {
+    laravelVersion: String,
+    phpVersion: String
   },
   methods: {
     showMeaning: function showMeaning(word) {
@@ -19834,6 +19839,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee3);
       }))();
+    },
+    switchLocale: function switchLocale(locale) {
+      console.log("Setting locale to: ".concat(locale));
+      this.$lang().setLocale(locale);
+      this.$forceUpdate();
     }
   },
   data: function data() {
@@ -19845,7 +19855,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   mounted: function mounted() {
-    this.getDictionaryWords();
+    this.getDictionaryWords(); // console.log(devDependencies)
   },
   watch: {
     language: function language(newVal, oldVal) {
@@ -19887,6 +19897,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee5);
       }))();
+    }
+  },
+  computed: {
+    languageVersions: function languageVersions() {
+      var tailwindVersion = (__webpack_require__(/*! ../../../../package.json */ "./package.json").devDependencies.tailwindcss.slice)(1);
+
+      return ["Laravel v".concat(this.laravelVersion), "PHP v".concat(this.phpVersion), "Vue v".concat(vue__WEBPACK_IMPORTED_MODULE_3__.version), "Tailwind CSS v".concat(tailwindVersion)].join(' &bull; ');
     }
   }
 });
@@ -19935,11 +19952,26 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     select: function select(word) {
       this.$emit("show-meaning", word);
+    },
+    wordContainsLookUpText: function wordContainsLookUpText() {
+      return this.word.word.slice(0, this.lookUpText.length) === this.lookUpText && this.lookUpText !== "";
     }
   },
   computed: {
     getBackgroundColor: function getBackgroundColor() {
-      return this.selected ? 'bg-sky-200' : this.lookUpText !== "" && this.word.word.includes(this.lookUpText.trim()) ? 'bg-sky-100' : 'bg-stone-100';
+      return this.selected ? "ml-0.5 -mr-0.5 bg-sky-400 drop-shadow-lg" : this.wordContainsLookUpText() ? "bg-sky-100" : "bg-slate-50 hover:bg-slate-100";
+    },
+    getTextDecoration: function getTextDecoration() {
+      return this.selected ? "text-white font-semibold" : "text-black";
+    },
+    getNormalText: function getNormalText() {
+      return this.wordContainsLookUpText() ? this.word.word.slice(this.lookUpText.length) : this.word.word;
+    },
+    getMatchingText: function getMatchingText() {
+      return this.wordContainsLookUpText() ? this.word.word.slice(0, this.lookUpText.length) : "";
+    },
+    getMatchingTextDecoration: function getMatchingTextDecoration() {
+      return this.selected ? "" : "underline decoration-sky-400 underline-offset-2 font-semibold text-sky-500";
     }
   }
 });
@@ -20003,40 +20035,28 @@ var _hoisted_3 = {
 var _hoisted_4 = {
   "class": "language-select w-1/4"
 };
-
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+var _hoisted_5 = {
   selected: "",
   value: "vi-en"
-}, "Vietnamese - English", -1
-/* HOISTED */
-);
-
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
-  value: "en-vi"
-}, "English - Vietnamese", -1
-/* HOISTED */
-);
-
-var _hoisted_7 = [_hoisted_5, _hoisted_6];
-var _hoisted_8 = {
-  "class": "word-look-up flex flex-row h-full flex-grow"
 };
+var _hoisted_6 = {
+  value: "en-vi"
+};
+var _hoisted_7 = {
+  "class": "word-look-up flex flex-row h-full flex-grow pl-2"
+};
+var _hoisted_8 = ["placeholder"];
 var _hoisted_9 = {
   "class": "flex flex-row overflow-hidden"
 };
-
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "w-4/6 px-3"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-  "class": "language",
-  href: "#"
-}, "Vietnamese"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-  "class": "language",
-  href: "#"
-}, "English")], -1
-/* HOISTED */
-);
-
+var _hoisted_10 = {
+  "class": "w-4/6 px-3 py-1 flex flex-row justify-between"
+};
+var _hoisted_11 = ["innerHTML"];
+var _hoisted_12 = {
+  "class": "text-sm underline",
+  href: "https://github.com/yenthanh132/avdict-database-sqlite-converter"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_word_list_component = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("word-list-component");
 
@@ -20045,28 +20065,34 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     name: "language",
     id: "language",
-    "class": "h-full w-full border-2 border-stone-100 rounded",
+    "class": "h-full w-full border border-stale-200 rounded",
     onChange: _cache[0] || (_cache[0] = function ($event) {
       return $options.switchLanguage($event);
     })
-  }, _hoisted_7, 32
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('dictionary.vi_en')), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('dictionary.en_vi')), 1
+  /* TEXT */
+  )], 32
   /* HYDRATE_EVENTS */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    "class": "h-full px-1 flex-grow border-2 border-stone-100 rounded",
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "class": "h-full px-1 flex-grow border border-stale-200 rounded",
     type: "text",
-    placeholder: "Look up...",
+    placeholder: _ctx.__('dictionary.look_up_placeholder'),
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.lookUpWord = $event;
     })
-  }, null, 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.lookUpWord]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 8
+  /* PROPS */
+  , _hoisted_8), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.lookUpWord]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
-    "class": "p-2 bg-sky-500 font-medium text-base text-white",
+    "class": "w-1/12 p-2 bg-sky-500 hover:bg-sky-600 font-semibold text-base text-white rounded-r shadow",
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.lookUp && $options.lookUp.apply($options, arguments);
     })
-  }, "Look up ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_word_list_component, {
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('dictionary.look_up')), 1
+  /* TEXT */
+  )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_word_list_component, {
     words: $data.words,
     "selected-word": $data.selectedWord,
     "look-up-text": $data.lookUpWord,
@@ -20079,7 +20105,30 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     word: $data.selectedWord
   }, null, 8
   /* PROPS */
-  , ["word"])])]), _hoisted_10]);
+  , ["word"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    "class": "text-sm underline mr-1",
+    href: "javascript:",
+    onClick: _cache[4] || (_cache[4] = function ($event) {
+      return $options.switchLocale('vi');
+    })
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('dictionary.vi')), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    "class": "text-sm underline mr-1",
+    href: "javascript:",
+    onClick: _cache[5] || (_cache[5] = function ($event) {
+      return $options.switchLocale('en');
+    })
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('dictionary.en')), 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "text-sm",
+    innerHTML: $options.languageVersions
+  }, null, 8
+  /* PROPS */
+  , _hoisted_11), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('dictionary.credit')), 1
+  /* TEXT */
+  )])]);
 }
 
 /***/ }),
@@ -20126,15 +20175,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
+var _hoisted_1 = ["innerHTML"];
+var _hoisted_2 = ["innerHTML"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $options.select($props.word);
     }),
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["word my-1 p-1", $options.getBackgroundColor])
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.word.word), 1
-  /* TEXT */
-  )], 2
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["word my-1 py-1 px-2 rounded", $options.getBackgroundColor, $options.getTextDecoration])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["matching-text font-medium", $options.getMatchingTextDecoration]),
+    innerHTML: $options.getMatchingText
+  }, null, 10
+  /* CLASS, PROPS */
+  , _hoisted_1), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "normal-text",
+    innerHTML: $options.getNormalText
+  }, null, 8
+  /* PROPS */
+  , _hoisted_2)])], 2
   /* CLASS */
   );
 }
@@ -20155,7 +20214,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "scrolling-component overflow-y-auto h-full w-1/4",
+  "class": "scrolling-component overflow-y-auto h-full w-1/4 px-2",
   ref: "scrollComponent"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -20191,7 +20250,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./router */ "./resources/js/router/index.js");
 /* harmony import */ var _components_dictionary_Dictionary__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/dictionary/Dictionary */ "./resources/js/components/dictionary/Dictionary.vue");
+/* harmony import */ var laravel_vue_lang__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! laravel-vue-lang */ "./node_modules/laravel-vue-lang/dist/index.js");
+/* harmony import */ var laravel_vue_lang__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(laravel_vue_lang__WEBPACK_IMPORTED_MODULE_3__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 
 
 
@@ -20200,7 +20262,10 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
   components: {
     Dictionary: _components_dictionary_Dictionary__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
-}).use(_router__WEBPACK_IMPORTED_MODULE_1__["default"]).mount("#app");
+}).use(_router__WEBPACK_IMPORTED_MODULE_1__["default"]).use(laravel_vue_lang__WEBPACK_IMPORTED_MODULE_3__.Lang, {
+  locale: 'vi',
+  fallback: 'en'
+}).mount("#app");
 
 /***/ }),
 
@@ -20395,6 +20460,792 @@ var routes = [{
   history: (0,vue_router__WEBPACK_IMPORTED_MODULE_1__.createWebHistory)(),
   routes: routes
 }));
+
+/***/ }),
+
+/***/ "./node_modules/lang.js/src/lang.js":
+/*!******************************************!*\
+  !*** ./node_modules/lang.js/src/lang.js ***!
+  \******************************************/
+/***/ (function(module, exports) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ *  Lang.js for Laravel localization in JavaScript.
+ *
+ *  @version 1.1.12
+ *  @license MIT https://github.com/rmariuzzo/Lang.js/blob/master/LICENSE
+ *  @site    https://github.com/rmariuzzo/Lang.js
+ *  @author  Rubens Mariuzzo <rubens@mariuzzo.com>
+ */
+
+(function(root, factory) {
+    'use strict';
+
+    if (true) {
+        // AMD support.
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {}
+
+}(this, function() {
+    'use strict';
+
+    function inferLocale() {
+        if (typeof document !== 'undefined' && document.documentElement) {
+            return document.documentElement.lang;
+        }
+    };
+
+    function convertNumber(str) {
+        if (str === '-Inf') {
+            return -Infinity;
+        } else if (str === '+Inf' || str === 'Inf' || str === '*') {
+            return Infinity;
+        }
+        return parseInt(str, 10);
+    }
+
+    // Derived from: https://github.com/symfony/translation/blob/460390765eb7bb9338a4a323b8a4e815a47541ba/Interval.php
+    var intervalRegexp = /^({\s*(\-?\d+(\.\d+)?[\s*,\s*\-?\d+(\.\d+)?]*)\s*})|([\[\]])\s*(-Inf|\*|\-?\d+(\.\d+)?)\s*,\s*(\+?Inf|\*|\-?\d+(\.\d+)?)\s*([\[\]])$/;
+    var anyIntervalRegexp = /({\s*(\-?\d+(\.\d+)?[\s*,\s*\-?\d+(\.\d+)?]*)\s*})|([\[\]])\s*(-Inf|\*|\-?\d+(\.\d+)?)\s*,\s*(\+?Inf|\*|\-?\d+(\.\d+)?)\s*([\[\]])/;
+
+    // Default options //
+
+    var defaults = {
+        locale: 'en'/** The default locale if not set. */
+    };
+
+    // Constructor //
+
+    var Lang = function(options) {
+        options = options || {};
+        this.locale = options.locale || inferLocale() || defaults.locale;
+        this.fallback = options.fallback;
+        this.messages = options.messages;
+    };
+
+    // Methods //
+
+    /**
+     * Set messages source.
+     *
+     * @param messages {object} The messages source.
+     *
+     * @return void
+     */
+    Lang.prototype.setMessages = function(messages) {
+        this.messages = messages;
+    };
+
+    /**
+     * Get the current locale.
+     *
+     * @return {string} The current locale.
+     */
+    Lang.prototype.getLocale = function() {
+        return this.locale || this.fallback;
+    };
+
+    /**
+     * Set the current locale.
+     *
+     * @param locale {string} The locale to set.
+     *
+     * @return void
+     */
+    Lang.prototype.setLocale = function(locale) {
+        this.locale = locale;
+    };
+
+    /**
+     * Get the fallback locale being used.
+     *
+     * @return void
+     */
+    Lang.prototype.getFallback = function() {
+        return this.fallback;
+    };
+
+    /**
+     * Set the fallback locale being used.
+     *
+     * @param fallback {string} The fallback locale.
+     *
+     * @return void
+     */
+    Lang.prototype.setFallback = function(fallback) {
+        this.fallback = fallback;
+    };
+
+    /**
+     * This method act as an alias to get() method.
+     *
+     * @param key {string} The key of the message.
+     * @param locale {string} The locale of the message
+     *
+     * @return {boolean} true if the given key is defined on the messages source, otherwise false.
+     */
+    Lang.prototype.has = function(key, locale) {
+        if (typeof key !== 'string' || !this.messages) {
+            return false;
+        }
+
+        return this._getMessage(key, locale) !== null;
+    };
+
+    /**
+     * Get a translation message.
+     *
+     * @param key {string} The key of the message.
+     * @param replacements {object} The replacements to be done in the message.
+     * @param locale {string} The locale to use, if not passed use the default locale.
+     *
+     * @return {string} The translation message, if not found the given key.
+     */
+    Lang.prototype.get = function(key, replacements, locale) {
+        if (!this.has(key, locale)) {
+            return key;
+        }
+
+        var message = this._getMessage(key, locale);
+        if (message === null) {
+            return key;
+        }
+
+        if (replacements) {
+            message = this._applyReplacements(message, replacements);
+        }
+
+        return message;
+    };
+
+    /**
+     * This method act as an alias to get() method.
+     *
+     * @param key {string} The key of the message.
+     * @param replacements {object} The replacements to be done in the message.
+     *
+     * @return {string} The translation message, if not found the given key.
+     */
+    Lang.prototype.trans = function(key, replacements) {
+        return this.get(key, replacements);
+    };
+
+    /**
+     * Gets the plural or singular form of the message specified based on an integer value.
+     *
+     * @param key {string} The key of the message.
+     * @param count {number} The number of elements.
+     * @param replacements {object} The replacements to be done in the message.
+     * @param locale {string} The locale to use, if not passed use the default locale.
+     *
+     * @return {string} The translation message according to an integer value.
+     */
+    Lang.prototype.choice = function(key, number, replacements, locale) {
+        // Set default values for parameters replace and locale
+        replacements = typeof replacements !== 'undefined'
+            ? replacements
+            : {};
+
+        // The count must be replaced if found in the message
+        replacements.count = number;
+
+        // Message to get the plural or singular
+        var message = this.get(key, replacements, locale);
+
+        // Check if message is not null or undefined
+        if (message === null || message === undefined) {
+            return message;
+        }
+
+        // Separate the plural from the singular, if any
+        var messageParts = message.split('|');
+
+        // Get the explicit rules, If any
+        var explicitRules = [];
+
+        for (var i = 0; i < messageParts.length; i++) {
+            messageParts[i] = messageParts[i].trim();
+
+            if (anyIntervalRegexp.test(messageParts[i])) {
+                var messageSpaceSplit = messageParts[i].split(/\s/);
+                explicitRules.push(messageSpaceSplit.shift());
+                messageParts[i] = messageSpaceSplit.join(' ');
+            }
+        }
+
+        // Check if there's only one message
+        if (messageParts.length === 1) {
+            // Nothing to do here
+            return message;
+        }
+
+        // Check the explicit rules
+        for (var j = 0; j < explicitRules.length; j++) {
+            if (this._testInterval(number, explicitRules[j])) {
+                return messageParts[j];
+            }
+        }
+
+        locale = locale || this._getLocale(key);
+        var pluralForm = this._getPluralForm(number, locale);
+
+        return messageParts[pluralForm];
+    };
+
+    /**
+     * This method act as an alias to choice() method.
+     *
+     * @param key {string} The key of the message.
+     * @param count {number} The number of elements.
+     * @param replacements {object} The replacements to be done in the message.
+     *
+     * @return {string} The translation message according to an integer value.
+     */
+    Lang.prototype.transChoice = function(key, count, replacements) {
+        return this.choice(key, count, replacements);
+    };
+
+    /**
+     * Parse a message key into components.
+     *
+     * @param key {string} The message key to parse.
+     * @param key {string} The message locale to parse
+     * @return {object} A key object with source and entries properties.
+     */
+    Lang.prototype._parseKey = function(key, locale) {
+        if (typeof key !== 'string' || typeof locale !== 'string') {
+            return null;
+        }
+
+        var segments = key.split('.');
+        var source = segments[0].replace(/\//g, '.');
+
+        return {
+            source: locale + '.' + source,
+            sourceFallback: this.getFallback() + '.' + source,
+            entries: segments.slice(1)
+        };
+    };
+
+    /**
+     * Returns a translation message. Use `Lang.get()` method instead, this methods assumes the key exists.
+     *
+     * @param key {string} The key of the message.
+     * @param locale {string} The locale of the message
+     *
+     * @return {string} The translation message for the given key.
+     */
+    Lang.prototype._getMessage = function(key, locale) {
+        locale = locale || this.getLocale();
+        
+        key = this._parseKey(key, locale);
+
+        // Ensure message source exists.
+        if (this.messages[key.source] === undefined && this.messages[key.sourceFallback] === undefined) {
+            return null;
+        }
+
+        // Get message from default locale.
+        var message = this.messages[key.source];
+        var entries = key.entries.slice();
+        var subKey = entries.join('.');
+        message = message !== undefined ? this._getValueInKey(message, subKey) : undefined;
+
+
+        // Get message from fallback locale.
+        if (typeof message !== 'string' && this.messages[key.sourceFallback]) {
+            message = this.messages[key.sourceFallback];
+            entries = key.entries.slice();
+            subKey = '';
+            while (entries.length && message !== undefined) {
+                var subKey = !subKey ? entries.shift() : subKey.concat('.', entries.shift());
+                if (message[subKey]) {
+                    message = message[subKey]
+                    subKey = '';
+                }
+            }
+        }
+
+        if (typeof message !== 'string') {
+            return null;
+        }
+
+        return message;
+    };
+
+    Lang.prototype._getValueInKey = function(obj, str) {
+        // If the full key exists just return the value
+        if (typeof obj[str] === 'string') {
+            return obj[str]
+        }
+
+        str = str.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+        str = str.replace(/^\./, '');           // strip a leading dot
+
+        var parts = str.split('.');
+
+        for (var i = 0, n = parts.length; i < n; ++i) {
+            var currentKey = parts.slice(0, i + 1).join('.');
+            var restOfTheKey = parts.slice(i + 1, parts.length).join('.')
+            
+            if (obj[currentKey]) {
+                return this._getValueInKey(obj[currentKey], restOfTheKey)
+            }
+        }
+
+        return obj;
+    };
+
+    /**
+     * Return the locale to be used between default and fallback.
+     * @param {String} key
+     * @return {String}
+     */
+    Lang.prototype._getLocale = function(key) {
+        key = this._parseKey(key, this.locale)
+        if (this.messages[key.source]) {
+            return this.locale;
+        }
+        if (this.messages[key.sourceFallback]) {
+            return this.fallback;
+        }
+        return null;
+    };
+
+    /**
+     * Find a message in a translation tree using both dotted keys and regular ones
+     *
+     * @param pathSegments {array} An array of path segments such as ['family', 'father']
+     * @param tree {object} The translation tree
+     */
+    Lang.prototype._findMessageInTree = function(pathSegments, tree) {
+        while (pathSegments.length && tree !== undefined) {
+            var dottedKey = pathSegments.join('.');
+            if (tree[dottedKey]) {
+                tree = tree[dottedKey];
+                break;
+            }
+
+            tree = tree[pathSegments.shift()]
+        }
+
+        return tree;
+    };
+
+    /**
+     * Sort replacement keys by length in descending order.
+     *
+     * @param a {string} Replacement key
+     * @param b {string} Sibling replacement key
+     * @return {number}
+     * @private
+     */
+    Lang.prototype._sortReplacementKeys = function(a, b) {
+        return b.length - a.length;
+    };
+
+    /**
+     * Apply replacements to a string message containing placeholders.
+     *
+     * @param message {string} The text message.
+     * @param replacements {object} The replacements to be done in the message.
+     *
+     * @return {string} The string message with replacements applied.
+     */
+    Lang.prototype._applyReplacements = function(message, replacements) {
+        var keys = Object.keys(replacements).sort(this._sortReplacementKeys);
+
+        keys.forEach(function(replace) {
+            message = message.replace(new RegExp(':' + replace, 'gi'), function (match) {
+                var value = replacements[replace];
+
+                // Capitalize all characters.
+                var allCaps = match === match.toUpperCase();
+                if (allCaps) {
+                    return value.toUpperCase();
+                }
+
+                // Capitalize first letter.
+                var firstCap = match === match.replace(/\w/i, function(letter) {
+                    return letter.toUpperCase();
+                });
+                if (firstCap) {
+                    return value.charAt(0).toUpperCase() + value.slice(1);
+                }
+
+                return value;
+            })
+        });
+        return message;
+    };
+
+    /**
+     * Checks if the given `count` is within the interval defined by the {string} `interval`
+     *
+     * @param  count     {int}    The amount of items.
+     * @param  interval  {string} The interval to be compared with the count.
+     * @return {boolean}          Returns true if count is within interval; false otherwise.
+     */
+    Lang.prototype._testInterval = function(count, interval) {
+        /**
+         * From the Symfony\Component\Translation\Interval Docs
+         *
+         * Tests if a given number belongs to a given math interval.
+         *
+         * An interval can represent a finite set of numbers:
+         *
+         *  {1,2,3,4}
+         *
+         * An interval can represent numbers between two numbers:
+         *
+         *  [1, +Inf]
+         *  ]-1,2[
+         *
+         * The left delimiter can be [ (inclusive) or ] (exclusive).
+         * The right delimiter can be [ (exclusive) or ] (inclusive).
+         * Beside numbers, you can use -Inf and +Inf for the infinite.
+         */
+
+        if (typeof interval !== 'string') {
+            throw 'Invalid interval: should be a string.';
+        }
+
+        interval = interval.trim();
+
+        var matches = interval.match(intervalRegexp);
+        if (!matches) {
+            throw 'Invalid interval: ' + interval;
+        }
+
+        if (matches[2]) {
+            var items = matches[2].split(',');
+            for (var i = 0; i < items.length; i++) {
+                if (parseInt(items[i], 10) === count) {
+                    return true;
+                }
+            }
+        } else {
+            // Remove falsy values.
+            matches = matches.filter(function(match) {
+                return !!match;
+            });
+
+            var leftDelimiter = matches[1];
+            var leftNumber = convertNumber(matches[2]);
+            if (leftNumber === Infinity) {
+                leftNumber = -Infinity;
+            }
+            var rightNumber = convertNumber(matches[3]);
+            var rightDelimiter = matches[4];
+
+            return (leftDelimiter === '[' ? count >= leftNumber : count > leftNumber)
+                && (rightDelimiter === ']' ? count <= rightNumber : count < rightNumber);
+        }
+
+        return false;
+    };
+
+    /**
+     * Returns the plural position to use for the given locale and number.
+     *
+     * The plural rules are derived from code of the Zend Framework (2010-09-25),
+     * which is subject to the new BSD license (http://framework.zend.com/license/new-bsd).
+     * Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
+     *
+     * @param {Number} count
+     * @param {String} locale
+     * @return {Number}
+     */
+    Lang.prototype._getPluralForm = function(count, locale) {
+        switch (locale) {
+            case 'az':
+            case 'bo':
+            case 'dz':
+            case 'id':
+            case 'ja':
+            case 'jv':
+            case 'ka':
+            case 'km':
+            case 'kn':
+            case 'ko':
+            case 'ms':
+            case 'th':
+            case 'tr':
+            case 'vi':
+            case 'zh':
+                return 0;
+
+            case 'af':
+            case 'bn':
+            case 'bg':
+            case 'ca':
+            case 'da':
+            case 'de':
+            case 'el':
+            case 'en':
+            case 'eo':
+            case 'es':
+            case 'et':
+            case 'eu':
+            case 'fa':
+            case 'fi':
+            case 'fo':
+            case 'fur':
+            case 'fy':
+            case 'gl':
+            case 'gu':
+            case 'ha':
+            case 'he':
+            case 'hu':
+            case 'is':
+            case 'it':
+            case 'ku':
+            case 'lb':
+            case 'ml':
+            case 'mn':
+            case 'mr':
+            case 'nah':
+            case 'nb':
+            case 'ne':
+            case 'nl':
+            case 'nn':
+            case 'no':
+            case 'om':
+            case 'or':
+            case 'pa':
+            case 'pap':
+            case 'ps':
+            case 'pt':
+            case 'so':
+            case 'sq':
+            case 'sv':
+            case 'sw':
+            case 'ta':
+            case 'te':
+            case 'tk':
+            case 'ur':
+            case 'zu':
+                return (count == 1)
+                    ? 0
+                    : 1;
+
+            case 'am':
+            case 'bh':
+            case 'fil':
+            case 'fr':
+            case 'gun':
+            case 'hi':
+            case 'hy':
+            case 'ln':
+            case 'mg':
+            case 'nso':
+            case 'xbr':
+            case 'ti':
+            case 'wa':
+                return ((count === 0) || (count === 1))
+                    ? 0
+                    : 1;
+
+            case 'be':
+            case 'bs':
+            case 'hr':
+            case 'ru':
+            case 'sr':
+            case 'uk':
+                return ((count % 10 == 1) && (count % 100 != 11))
+                    ? 0
+                    : (((count % 10 >= 2) && (count % 10 <= 4) && ((count % 100 < 10) || (count % 100 >= 20)))
+                        ? 1
+                        : 2);
+
+            case 'cs':
+            case 'sk':
+                return (count == 1)
+                    ? 0
+                    : (((count >= 2) && (count <= 4))
+                        ? 1
+                        : 2);
+
+            case 'ga':
+                return (count == 1)
+                    ? 0
+                    : ((count == 2)
+                        ? 1
+                        : 2);
+
+            case 'lt':
+                return ((count % 10 == 1) && (count % 100 != 11))
+                    ? 0
+                    : (((count % 10 >= 2) && ((count % 100 < 10) || (count % 100 >= 20)))
+                        ? 1
+                        : 2);
+
+            case 'sl':
+                return (count % 100 == 1)
+                    ? 0
+                    : ((count % 100 == 2)
+                        ? 1
+                        : (((count % 100 == 3) || (count % 100 == 4))
+                            ? 2
+                            : 3));
+
+            case 'mk':
+                return (count % 10 == 1)
+                    ? 0
+                    : 1;
+
+            case 'mt':
+                return (count == 1)
+                    ? 0
+                    : (((count === 0) || ((count % 100 > 1) && (count % 100 < 11)))
+                        ? 1
+                        : (((count % 100 > 10) && (count % 100 < 20))
+                            ? 2
+                            : 3));
+
+            case 'lv':
+                return (count === 0)
+                    ? 0
+                    : (((count % 10 == 1) && (count % 100 != 11))
+                        ? 1
+                        : 2);
+
+            case 'pl':
+                return (count == 1)
+                    ? 0
+                    : (((count % 10 >= 2) && (count % 10 <= 4) && ((count % 100 < 12) || (count % 100 > 14)))
+                        ? 1
+                        : 2);
+
+            case 'cy':
+                return (count == 1)
+                    ? 0
+                    : ((count == 2)
+                        ? 1
+                        : (((count == 8) || (count == 11))
+                            ? 2
+                            : 3));
+
+            case 'ro':
+                return (count == 1)
+                    ? 0
+                    : (((count === 0) || ((count % 100 > 0) && (count % 100 < 20)))
+                        ? 1
+                        : 2);
+
+            case 'ar':
+                return (count === 0)
+                    ? 0
+                    : ((count == 1)
+                        ? 1
+                        : ((count == 2)
+                            ? 2
+                            : (((count % 100 >= 3) && (count % 100 <= 10))
+                                ? 3
+                                : (((count % 100 >= 11) && (count % 100 <= 99))
+                                    ? 4
+                                    : 5))));
+
+            default:
+                return 0;
+        }
+    };
+
+    return Lang;
+
+}));
+
+
+/***/ }),
+
+/***/ "./node_modules/laravel-vue-lang/dist/index.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/laravel-vue-lang/dist/index.js ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Lang = exports["default"] = void 0;
+const lang_js_1 = __importDefault(__webpack_require__(/*! lang.js */ "./node_modules/lang.js/src/lang.js"));
+/*
+|--------------------------------------------------------------------------
+| Helpers
+|--------------------------------------------------------------------------
+*/
+/**
+ * Determines if the given locale and domain combination is ignored.
+ */
+function shouldIgnore(ignore, locale, domain) {
+    for (let [ignoreLocale, ignoreDomains] of Object.entries(ignore)) {
+        if (locale === ignoreLocale && ignoreDomains.includes(domain)) {
+            return true;
+        }
+    }
+    return false;
+}
+/**
+ * Imports translations from the configured alias.
+ */
+function importTranslations({ ignore, globalTranslationsKey }) {
+    const catalogue = {};
+    const files = __webpack_require__("./resources/lang sync recursive \\.(php%7Cjson)$");
+    files.keys().forEach((file) => {
+        var _a, _b;
+        // Find localization files at the root directory
+        const [isGlobal, rootLocale] = (_a = /\.\/([A-Za-z0-9-_]+).(?:php|json)/.exec(file)) !== null && _a !== void 0 ? _a : [];
+        if (isGlobal) {
+            catalogue[`${rootLocale}.${globalTranslationsKey}`] = files(file);
+            return;
+        }
+        // Find localization files in a /lang/ directory
+        const [isScoped, locale, domain] = (_b = /\.\/([A-Za-z0-9-_]+)\/([A-Za-z0-9-_]+).(?:php|json)/.exec(file)) !== null && _b !== void 0 ? _b : [];
+        if (!ignore || !shouldIgnore(ignore, locale, domain)) {
+            catalogue[`${locale}.${domain}`] = files(file);
+        }
+    });
+    return catalogue;
+}
+/**
+ * Adds localization to Vue.
+ */
+const Lang = {
+    install: (Vue, options = {}) => {
+        var _a;
+        // Defines default options
+        options = Object.assign({ globalTranslationsKey: '__global__' }, options);
+        // Creates the Lang.js object
+        const i18n = new lang_js_1.default(Object.assign({ fallback: document.documentElement.lang || navigator.language, messages: (_a = options === null || options === void 0 ? void 0 : options.messages) !== null && _a !== void 0 ? _a : importTranslations(options) }, options));
+        // Defines a global translation function
+        const __ = (key, ...args) => {
+            // Non-global translations
+            if (key.match(/^[\w-]+(?:\.[\w-]+)+$/)) {
+                return i18n.get(key, ...args);
+            }
+            // Global translations
+            const result = i18n.get(`${options.globalTranslationsKey}.${key}`, ...args);
+            return result.startsWith(options.globalTranslationsKey)
+                ? result.substr(options.globalTranslationsKey.length + 1)
+                : result;
+        };
+        Vue.mixin({
+            methods: {
+                $lang: () => i18n,
+                __,
+            },
+        });
+    },
+};
+exports["default"] = Lang;
+exports.Lang = Lang;
+
 
 /***/ }),
 
@@ -37623,6 +38474,66 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/lang/en/auth.php":
+/*!************************************!*\
+  !*** ./resources/lang/en/auth.php ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = {"failed":"These credentials do not match our records.","password":"The provided password is incorrect.","throttle":"Too many login attempts. Please try again in :seconds seconds."};
+
+/***/ }),
+
+/***/ "./resources/lang/en/dictionary.php":
+/*!******************************************!*\
+  !*** ./resources/lang/en/dictionary.php ***!
+  \******************************************/
+/***/ ((module) => {
+
+module.exports = {"vi":"Vietnamese","en":"English","vi_en":"Vietnamese - English","en_vi":"English - Vietnamese","look_up":"Look up","look_up_placeholder":"Look up...","credit":"Database credit"};
+
+/***/ }),
+
+/***/ "./resources/lang/en/pagination.php":
+/*!******************************************!*\
+  !*** ./resources/lang/en/pagination.php ***!
+  \******************************************/
+/***/ ((module) => {
+
+module.exports = {"previous":"&laquo; Previous","next":"Next &raquo;"};
+
+/***/ }),
+
+/***/ "./resources/lang/en/passwords.php":
+/*!*****************************************!*\
+  !*** ./resources/lang/en/passwords.php ***!
+  \*****************************************/
+/***/ ((module) => {
+
+module.exports = {"reset":"Your password has been reset!","sent":"We have emailed your password reset link!","throttled":"Please wait before retrying.","token":"This password reset token is invalid.","user":"We can't find a user with that email address."};
+
+/***/ }),
+
+/***/ "./resources/lang/en/validation.php":
+/*!******************************************!*\
+  !*** ./resources/lang/en/validation.php ***!
+  \******************************************/
+/***/ ((module) => {
+
+module.exports = {"accepted":"The :attribute must be accepted.","accepted_if":"The :attribute must be accepted when :other is :value.","active_url":"The :attribute is not a valid URL.","after":"The :attribute must be a date after :date.","after_or_equal":"The :attribute must be a date after or equal to :date.","alpha":"The :attribute must only contain letters.","alpha_dash":"The :attribute must only contain letters, numbers, dashes and underscores.","alpha_num":"The :attribute must only contain letters and numbers.","array":"The :attribute must be an array.","before":"The :attribute must be a date before :date.","before_or_equal":"The :attribute must be a date before or equal to :date.","between":{"numeric":"The :attribute must be between :min and :max.","file":"The :attribute must be between :min and :max kilobytes.","string":"The :attribute must be between :min and :max characters.","array":"The :attribute must have between :min and :max items."},"boolean":"The :attribute field must be true or false.","confirmed":"The :attribute confirmation does not match.","current_password":"The password is incorrect.","date":"The :attribute is not a valid date.","date_equals":"The :attribute must be a date equal to :date.","date_format":"The :attribute does not match the format :format.","declined":"The :attribute must be declined.","declined_if":"The :attribute must be declined when :other is :value.","different":"The :attribute and :other must be different.","digits":"The :attribute must be :digits digits.","digits_between":"The :attribute must be between :min and :max digits.","dimensions":"The :attribute has invalid image dimensions.","distinct":"The :attribute field has a duplicate value.","email":"The :attribute must be a valid email address.","ends_with":"The :attribute must end with one of the following: :values.","enum":"The selected :attribute is invalid.","exists":"The selected :attribute is invalid.","file":"The :attribute must be a file.","filled":"The :attribute field must have a value.","gt":{"numeric":"The :attribute must be greater than :value.","file":"The :attribute must be greater than :value kilobytes.","string":"The :attribute must be greater than :value characters.","array":"The :attribute must have more than :value items."},"gte":{"numeric":"The :attribute must be greater than or equal to :value.","file":"The :attribute must be greater than or equal to :value kilobytes.","string":"The :attribute must be greater than or equal to :value characters.","array":"The :attribute must have :value items or more."},"image":"The :attribute must be an image.","in":"The selected :attribute is invalid.","in_array":"The :attribute field does not exist in :other.","integer":"The :attribute must be an integer.","ip":"The :attribute must be a valid IP address.","ipv4":"The :attribute must be a valid IPv4 address.","ipv6":"The :attribute must be a valid IPv6 address.","json":"The :attribute must be a valid JSON string.","lt":{"numeric":"The :attribute must be less than :value.","file":"The :attribute must be less than :value kilobytes.","string":"The :attribute must be less than :value characters.","array":"The :attribute must have less than :value items."},"lte":{"numeric":"The :attribute must be less than or equal to :value.","file":"The :attribute must be less than or equal to :value kilobytes.","string":"The :attribute must be less than or equal to :value characters.","array":"The :attribute must not have more than :value items."},"mac_address":"The :attribute must be a valid MAC address.","max":{"numeric":"The :attribute must not be greater than :max.","file":"The :attribute must not be greater than :max kilobytes.","string":"The :attribute must not be greater than :max characters.","array":"The :attribute must not have more than :max items."},"mimes":"The :attribute must be a file of type: :values.","mimetypes":"The :attribute must be a file of type: :values.","min":{"numeric":"The :attribute must be at least :min.","file":"The :attribute must be at least :min kilobytes.","string":"The :attribute must be at least :min characters.","array":"The :attribute must have at least :min items."},"multiple_of":"The :attribute must be a multiple of :value.","not_in":"The selected :attribute is invalid.","not_regex":"The :attribute format is invalid.","numeric":"The :attribute must be a number.","password":"The password is incorrect.","present":"The :attribute field must be present.","prohibited":"The :attribute field is prohibited.","prohibited_if":"The :attribute field is prohibited when :other is :value.","prohibited_unless":"The :attribute field is prohibited unless :other is in :values.","prohibits":"The :attribute field prohibits :other from being present.","regex":"The :attribute format is invalid.","required":"The :attribute field is required.","required_array_keys":"The :attribute field must contain entries for: :values.","required_if":"The :attribute field is required when :other is :value.","required_unless":"The :attribute field is required unless :other is in :values.","required_with":"The :attribute field is required when :values is present.","required_with_all":"The :attribute field is required when :values are present.","required_without":"The :attribute field is required when :values is not present.","required_without_all":"The :attribute field is required when none of :values are present.","same":"The :attribute and :other must match.","size":{"numeric":"The :attribute must be :size.","file":"The :attribute must be :size kilobytes.","string":"The :attribute must be :size characters.","array":"The :attribute must contain :size items."},"starts_with":"The :attribute must start with one of the following: :values.","string":"The :attribute must be a string.","timezone":"The :attribute must be a valid timezone.","unique":"The :attribute has already been taken.","uploaded":"The :attribute failed to upload.","url":"The :attribute must be a valid URL.","uuid":"The :attribute must be a valid UUID.","custom":{"attribute-name":{"rule-name":"custom-message"}},"attributes":[]};
+
+/***/ }),
+
+/***/ "./resources/lang/vi/dictionary.php":
+/*!******************************************!*\
+  !*** ./resources/lang/vi/dictionary.php ***!
+  \******************************************/
+/***/ ((module) => {
+
+module.exports = {"vi":"Tiếng Việt","en":"Tiếng Anh","vi_en":"Từ điển Việt - Anh","en_vi":"Từ điển Anh - Việt","look_up":"Tra từ","look_up_placeholder":"Tra từ...","credit":"Nguồn cơ sở dữ liệu"};
+
+/***/ }),
+
 /***/ "./node_modules/process/browser.js":
 /*!*****************************************!*\
   !*** ./node_modules/process/browser.js ***!
@@ -41797,6 +42708,43 @@ function compileToFunction(template, options) {
 
 /***/ }),
 
+/***/ "./resources/lang sync recursive \\.(php%7Cjson)$":
+/*!**********************************************!*\
+  !*** ./resources/lang/ sync \.(php%7Cjson)$ ***!
+  \**********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var map = {
+	"./en/auth.php": "./resources/lang/en/auth.php",
+	"./en/dictionary.php": "./resources/lang/en/dictionary.php",
+	"./en/pagination.php": "./resources/lang/en/pagination.php",
+	"./en/passwords.php": "./resources/lang/en/passwords.php",
+	"./en/validation.php": "./resources/lang/en/validation.php",
+	"./vi/dictionary.php": "./resources/lang/vi/dictionary.php"
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	if(!__webpack_require__.o(map, req)) {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return map[req];
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "./resources/lang sync recursive \\.(php%7Cjson)$";
+
+/***/ }),
+
 /***/ "./node_modules/axios/package.json":
 /*!*****************************************!*\
   !*** ./node_modules/axios/package.json ***!
@@ -41805,6 +42753,17 @@ function compileToFunction(template, options) {
 
 "use strict";
 module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"Promise based HTTP client for the browser and node.js","main":"index.js","scripts":{"test":"grunt test","start":"node ./sandbox/server.js","build":"NODE_ENV=production grunt build","preversion":"npm test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json","postversion":"git push && git push --tags","examples":"node ./examples/server.js","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","fix":"eslint --fix lib/**/*.js"},"repository":{"type":"git","url":"https://github.com/axios/axios.git"},"keywords":["xhr","http","ajax","promise","node"],"author":"Matt Zabriskie","license":"MIT","bugs":{"url":"https://github.com/axios/axios/issues"},"homepage":"https://axios-http.com","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"jsdelivr":"dist/axios.min.js","unpkg":"dist/axios.min.js","typings":"./index.d.ts","dependencies":{"follow-redirects":"^1.14.0"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}]}');
+
+/***/ }),
+
+/***/ "./package.json":
+/*!**********************!*\
+  !*** ./package.json ***!
+  \**********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"private":true,"scripts":{"dev":"npm run development","development":"mix","watch":"mix watch","watch-poll":"mix watch -- --watch-options-poll=1000","hot":"mix watch --hot","prod":"npm run production","production":"mix --production"},"devDependencies":{"autoprefixer":"^10.4.7","axios":"^0.21","laravel-mix":"^6.0.6","lodash":"^4.17.19","postcss":"^8.4.14","tailwindcss":"^3.1.6"},"dependencies":{"laravel-vue-lang":"^3.1.3","vue":"^3.2.36","vue-loader":"^17.0.0","vue-router":"^4.0.13"}}');
 
 /***/ })
 
