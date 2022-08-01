@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 Route::get('/dictionary', function () {
     return view('dictionary');
@@ -24,10 +24,3 @@ Route::get('/dictionary', function () {
 
 Route::view('/{any}', 'dictionary')
     ->where('any', '.*');
-
-Route::get('/set-locale/{locale}', function ($locale) {
-    if (! in_array($locale, ['en', 'vi'])) {
-        abort(400);
-    }
-    App::setLocale($locale);
-});

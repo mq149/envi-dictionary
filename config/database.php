@@ -94,7 +94,7 @@ return [
         'mongodb' => [
             'driver' => 'mongodb',
             'dsn' => env('DB_URI', 'mongodb://localhost:27017'),
-            'database' => 'envi_dictionary',
+            'database' => env('DB_DATABASE', 'envi_dictionary'),
         ],
     ],
 
