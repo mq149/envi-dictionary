@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\BaseModels\Word;
 
 class VietnameseWord extends Word
 {
-    use HasFactory;
-
     protected $table = 'va';
+    protected $collection = 'va';
 }

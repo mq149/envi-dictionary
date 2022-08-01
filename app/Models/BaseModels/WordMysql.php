@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\BaseModels;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Word extends Model
+class WordMysql extends Model
 {
-    use HasFactory;
-
+    protected $connection = 'mysql';
     protected $attributes = ['id', 'word', 'html', 'description', 'pronounce'];
 }
