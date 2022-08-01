@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\BaseModels\Word;
 
 class EnglishWord extends Word
 {
-    use HasFactory;
-
     protected $table = 'av';
-//    protected $connection = 'mongodb';
-//    protected $collection = 'av';
+    protected $collection = 'av';
 }

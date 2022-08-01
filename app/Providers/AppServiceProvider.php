@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\Implements\WordServiceMongodb;
+use App\Services\Implements\WordServiceMysql;
+use App\Services\Interfaces\WordServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +16,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(WordServiceInterface::class, function ($app) {
+            if ($this->usingMongodb()) {
+                return $app->make(WordServiceMongodb::class);
+            } else {
+                return $app->make(WordServiceMysql::class);
+            }
+        });
     }
 
     /**
@@ -24,5 +33,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+    }
+
+    private function usingMongodb(): bool
+    {
+        return config('database.default') == 'mongodb';
     }
 }
