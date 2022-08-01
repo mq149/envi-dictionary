@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Services\Implements\WordServiceMongodb;
 use App\Services\Implements\WordServiceMysql;
 use App\Services\Interfaces\WordServiceInterface;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,7 +33,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 
     private function usingMongodb(): bool
