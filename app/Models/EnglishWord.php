@@ -9,4 +9,6 @@ class EnglishWord extends Word
     use HasFactory;
 
     protected $table = 'av';
+//    protected $connection = 'mongodb';
+//    protected $collection = 'av';
 }

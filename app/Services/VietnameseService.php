@@ -3,18 +3,14 @@
 namespace App\Services;
 
 use App\Models\VietnameseWord;
-use App\Traits\LookUpTrait;
+use App\Services\Implements\WordServiceImplement;
 use Illuminate\Http\Request;
 
-class VietnameseService
+class VietnameseService extends WordServiceImplement
 {
-    use LookUpTrait;
 
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        if ($request->has('text')) {
-            return $this->lookUp((new VietnameseWord()), $request->get('text'));
-        }
-        return VietnameseWord::query()->paginate(20);
+        return $this->lookUp(new VietnameseWord(), $request->get('text', ''));
     }
 }

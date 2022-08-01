@@ -21,6 +21,7 @@ class EnglishController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return AnonymousResourceCollection
      */
     public function index(Request $request): AnonymousResourceCollection
@@ -35,7 +36,7 @@ class EnglishController extends Controller
      * @param EnglishWord $englishWord
      * @return WordResource
      */
-    public function show(EnglishWord $englishWord)
+    public function show(EnglishWord $englishWord): WordResource
     {
         return new WordResource($englishWord);
     }

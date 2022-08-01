@@ -3,18 +3,14 @@
 namespace App\Services;
 
 use App\Models\EnglishWord;
-use App\Traits\LookUpTrait;
+use App\Services\Implements\WordServiceImplement;
 use Illuminate\Http\Request;
 
-class EnglishService
+class EnglishService extends WordServiceImplement
 {
-    use LookUpTrait;
 
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        if ($request->has('text') && $request->get('text', '') != '') {
-            return $this->lookUp((new EnglishWord()), $request->get('text'));
-        }
-        return EnglishWord::query()->paginate(20);
+        return $this->lookUp(new EnglishWord(), $request->get('text', ''));
     }
 }

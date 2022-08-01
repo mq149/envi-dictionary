@@ -21,9 +21,10 @@ class VietnameseController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return AnonymousResourceCollection
      */
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         $vietnameseWords = $this->vietnameseService->index($request);
         return WordResource::collection($vietnameseWords);
@@ -35,7 +36,7 @@ class VietnameseController extends Controller
      * @param VietnameseWord $vietnameseWord
      * @return WordResource
      */
-    public function show(VietnameseWord $vietnameseWord)
+    public function show(VietnameseWord $vietnameseWord): WordResource
     {
         return new WordResource($vietnameseWord);
     }
