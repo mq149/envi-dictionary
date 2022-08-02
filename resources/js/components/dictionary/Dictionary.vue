@@ -24,7 +24,8 @@
                                   border border-stale-200 rounded"
                            type="text"
                            :placeholder="__('dictionary.look_up_placeholder')"
-                           v-model="lookUpWord">
+                           v-model.lazy.trim="lookUpWord"
+                           @keyup.enter="lookUp">
                     <button type="button"
                             class="w-1/12 p-2
                                    bg-sky-500 hover:bg-sky-600
@@ -102,6 +103,15 @@ export default {
             console.log(`Setting locale to: ${locale}`)
             this.$lang().setLocale(locale)
             this.$forceUpdate()
+        },
+        focusMiddleWordInList() {
+            const wordItems = document.getElementById('word-list').children
+            const middleWord = wordItems.item(Math.floor(wordItems.length / 2) - 1)
+            console.log(middleWord)
+            middleWord.scrollIntoView({block: "center"})
+        },
+        print() {
+            console.log('input stopped')
         }
     },
     data() {
@@ -123,7 +133,9 @@ export default {
         },
         async lookUpWord(newVal, oldVal) {
             console.log(`Lookup word is: ${newVal}`)
-            await this.lookUp()
+            await this.lookUp().then(() => {
+                this.focusMiddleWordInList()
+            })
         }
     },
     computed: {

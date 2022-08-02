@@ -6,5 +6,6 @@ return [
     'en_vi' => 'English - Vietnamese',
     'look_up' => 'Look up',
     'look_up_placeholder' => 'Look up...',
-    'credit' => 'Database credit'
+    'credit' => 'Database source',
+    'no_result' => 'There is no result for ":word"'
 ];
