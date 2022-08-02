@@ -232,7 +232,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         // Dev dependencies
-        'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
+        'Debugbar' => \Barryvdh\Debugbar\Facades\Debugbar::class,
     ],
 
 ];
