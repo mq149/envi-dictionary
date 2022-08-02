@@ -8,7 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class WordServiceMysql implements WordServiceInterface
 {
-    public function lookUp(Model $model, string $text, int $resultsBefore = 10, int $resultsAfter = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function lookUp(Model $model, string $text, int $resultsBefore = 20, int $resultsAfter = 20): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         if ($text == '') {
             return $model::query()->paginate($resultsBefore + $resultsAfter);

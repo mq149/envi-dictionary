@@ -8,11 +8,12 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class WordServiceMongodb implements WordServiceInterface
 {
-    public function lookUp(Model $model, string $text, int $resultsBefore = 10, int $resultsAfter = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function lookUp(Model $model, string $text, int $resultsBefore = 20, int $resultsAfter = 20): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $model->setConnection('mongodb');
+        $total = $resultsBefore + $resultsAfter;
         if ($text == '') {
-            return $model::query()->paginate($resultsBefore + $resultsAfter);
+            return $model::query()->paginate($total);
         }
         $target = $model::query()
             ->where('word', 'like', $text . '%')->first();
@@ -21,20 +22,22 @@ class WordServiceMongodb implements WordServiceInterface
             $next = $model::query()
                 ->where('id', '>', ($target->id))
                 ->project($projection)
-                ->orderBy('id');
-            $nextCount = $next->take($resultsAfter)->count();
+                ->orderBy('id')
+                ->take($total)->get()->toArray();
+            $nextCount = count($next);
             $prev = $model::query()
                 ->where('id', '<=', ($target->id))
                 ->project($projection)
-                ->orderByDesc('id');
-            $prevCount = $prev->take($resultsBefore)->count();
+                ->orderByDesc('id')
+                ->take($total)->get()->toArray();
+            $prevCount = count($prev);
             if ($nextCount < $resultsBefore) {
                 $resultsAfter += $resultsBefore - $nextCount;
             } else if ($prevCount < $resultsAfter) {
                 $resultsBefore += $resultsAfter - $prevCount;
             }
-            $prevResult = $prev->take($resultsAfter)->get()->toArray();
-            $nextResult = $next->take($resultsBefore)->get()->toArray();
+            $prevResult = array_slice($prev, 0, $resultsBefore);
+            $nextResult = array_slice($next, 0, $resultsAfter);
             $result = array_merge($prevResult, $nextResult);
             $ids = array_column($result, 'id');
             array_multisort($ids, SORT_ASC, $result);
@@ -42,6 +45,6 @@ class WordServiceMongodb implements WordServiceInterface
                 $resultsBefore + $resultsAfter + 1,
                 $resultsBefore + $resultsAfter + 1);
         }
-        return new LengthAwarePaginator([], 0, 0);
+        return new LengthAwarePaginator([], 1, 1);
     }
 }

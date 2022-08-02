@@ -19844,6 +19844,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       console.log("Setting locale to: ".concat(locale));
       this.$lang().setLocale(locale);
       this.$forceUpdate();
+    },
+    focusMiddleWordInList: function focusMiddleWordInList() {
+      var wordItems = document.getElementById('word-list').children;
+      var middleWord = wordItems.item(Math.floor(wordItems.length / 2) - 1);
+      console.log(middleWord);
+      middleWord.scrollIntoView({
+        block: "center"
+      });
+    },
+    print: function print() {
+      console.log('input stopped');
     }
   },
   data: function data() {
@@ -19888,7 +19899,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 console.log("Lookup word is: ".concat(newVal));
                 _context5.next = 3;
-                return _this5.lookUp();
+                return _this5.lookUp().then(function () {
+                  _this5.focusMiddleWordInList();
+                });
 
               case 3:
               case "end":
@@ -20005,6 +20018,11 @@ __webpack_require__.r(__webpack_exports__);
     showMeaning: function showMeaning(word) {
       this.$emit("show-meaning", word);
     }
+  },
+  computed: {
+    noResults: function noResults() {
+      return this.words.length === 0 && this.lookUpText !== '';
+    }
   }
 });
 
@@ -20081,13 +20099,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     placeholder: _ctx.__('dictionary.look_up_placeholder'),
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.lookUpWord = $event;
-    })
-  }, null, 8
-  /* PROPS */
-  , _hoisted_8), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.lookUpWord]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }),
+    onKeyup: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withKeys)(function () {
+      return $options.lookUp && $options.lookUp.apply($options, arguments);
+    }, ["enter"]))
+  }, null, 40
+  /* PROPS, HYDRATE_EVENTS */
+  , _hoisted_8), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.lookUpWord, void 0, {
+    lazy: true,
+    trim: true
+  }]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "w-1/12 p-2 bg-sky-500 hover:bg-sky-600 font-semibold text-base text-white rounded-r shadow",
-    onClick: _cache[2] || (_cache[2] = function () {
+    onClick: _cache[3] || (_cache[3] = function () {
       return $options.lookUp && $options.lookUp.apply($options, arguments);
     })
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('dictionary.look_up')), 1
@@ -20096,7 +20120,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     words: $data.words,
     "selected-word": $data.selectedWord,
     "look-up-text": $data.lookUpWord,
-    onShowMeaning: _cache[3] || (_cache[3] = function ($event) {
+    onShowMeaning: _cache[4] || (_cache[4] = function ($event) {
       return $options.showMeaning($event);
     })
   }, null, 8
@@ -20108,7 +20132,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   , ["word"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     "class": "text-sm underline mr-1",
     href: "javascript:",
-    onClick: _cache[4] || (_cache[4] = function ($event) {
+    onClick: _cache[5] || (_cache[5] = function ($event) {
       return $options.switchLocale('vi');
     })
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('dictionary.vi')), 1
@@ -20116,7 +20140,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     "class": "text-sm underline mr-1",
     href: "javascript:",
-    onClick: _cache[5] || (_cache[5] = function ($event) {
+    onClick: _cache[6] || (_cache[6] = function ($event) {
       return $options.switchLocale('en');
     })
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('dictionary.en')), 1
@@ -20215,7 +20239,12 @@ __webpack_require__.r(__webpack_exports__);
 
 var _hoisted_1 = {
   "class": "scrolling-component overflow-y-auto h-full w-1/4 px-2",
-  ref: "scrollComponent"
+  ref: "scrollComponent",
+  id: "word-list"
+};
+var _hoisted_2 = {
+  key: 0,
+  "class": "text-sm mt-2"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_word_component = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("word-component");
@@ -20232,7 +20261,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["word", "selected", "look-up-text", "onShowMeaning"]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))], 512
+  )), $options.noResults ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('dictionary.no_result', {
+    'word': $props.lookUpText
+  })), 1
+  /* TEXT */
+  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 512
   /* NEED_PATCH */
   );
 }
@@ -38490,7 +38523,7 @@ module.exports = {"failed":"These credentials do not match our records.","passwo
   \******************************************/
 /***/ ((module) => {
 
-module.exports = {"vi":"Vietnamese","en":"English","vi_en":"Vietnamese - English","en_vi":"English - Vietnamese","look_up":"Look up","look_up_placeholder":"Look up...","credit":"Database credit"};
+module.exports = {"vi":"Vietnamese","en":"English","vi_en":"Vietnamese - English","en_vi":"English - Vietnamese","look_up":"Look up","look_up_placeholder":"Look up...","credit":"Database source","no_result":"There is no result for \":word\""};
 
 /***/ }),
 
@@ -38530,7 +38563,7 @@ module.exports = {"accepted":"The :attribute must be accepted.","accepted_if":"T
   \******************************************/
 /***/ ((module) => {
 
-module.exports = {"vi":"Tiếng Việt","en":"Tiếng Anh","vi_en":"Từ điển Việt - Anh","en_vi":"Từ điển Anh - Việt","look_up":"Tra từ","look_up_placeholder":"Tra từ...","credit":"Nguồn cơ sở dữ liệu"};
+module.exports = {"vi":"Tiếng Việt","en":"Tiếng Anh","vi_en":"Từ điển Việt - Anh","en_vi":"Từ điển Anh - Việt","look_up":"Tra từ","look_up_placeholder":"Tra từ...","credit":"Nguồn cơ sở dữ liệu","no_result":"Không tìm thấy kết quả cho \":word\""};
 
 /***/ }),
 
@@ -42763,7 +42796,7 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"private":true,"scripts":{"dev":"npm run development","development":"mix","watch":"mix watch","watch-poll":"mix watch -- --watch-options-poll=1000","hot":"mix watch --hot","prod":"npm run production","production":"mix --production"},"devDependencies":{"autoprefixer":"^10.4.7","axios":"^0.21","laravel-mix":"^6.0.6","lodash":"^4.17.19","postcss":"^8.4.14","tailwindcss":"^3.1.6"},"dependencies":{"laravel-vue-lang":"^3.1.3","vue":"^3.2.36","vue-loader":"^17.0.0","vue-router":"^4.0.13"}}');
+module.exports = JSON.parse('{"private":true,"scripts":{"start":"npm run production","dev":"npm run development","development":"mix","watch":"mix watch","watch-poll":"mix watch -- --watch-options-poll=1000","hot":"mix watch --hot","prod":"npm run production","production":"mix --production"},"devDependencies":{"autoprefixer":"^10.4.7","axios":"^0.21","laravel-mix":"^6.0.6","lodash":"^4.17.19","postcss":"^8.4.14","tailwindcss":"^3.1.6"},"dependencies":{"laravel-vue-lang":"^3.1.3","vue":"^3.2.36","vue-loader":"^17.0.0","vue-router":"^4.0.13"}}');
 
 /***/ })
 
