@@ -13,7 +13,7 @@ class WordServiceMongodb implements WordServiceInterface
         $model->setConnection('mongodb');
         $total = $resultsBefore + $resultsAfter;
         if ($text == '') {
-            return $model::query()->paginate($total);
+            return $model::query()->orderBy('id')->paginate($total);
         }
         $target = $model::query()
             ->where('word', 'like', $text . '%')->first();
