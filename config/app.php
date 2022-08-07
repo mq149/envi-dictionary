@@ -166,7 +166,7 @@ return [
          * Package Service Providers...
          */
         \Jenssegers\Mongodb\MongodbServiceProvider::class,
-        \Barryvdh\Debugbar\ServiceProvider::class,
+//        \Barryvdh\Debugbar\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
