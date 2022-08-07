@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(WordServiceInterface::class, function ($app) {
-            if ($this->usingMongodb()) {
+            if (is_using_mongodb()) {
                 return $app->make(WordServiceMongodb::class);
             } else {
                 return $app->make(WordServiceMysql::class);
@@ -33,13 +33,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if($this->app->environment('production')) {
+        if(in_debug_mode()) {
             URL::forceScheme('https');
         }
-    }
-
-    private function usingMongodb(): bool
-    {
-        return config('database.default') == 'mongodb';
     }
 }

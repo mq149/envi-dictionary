@@ -8,6 +8,12 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class WordServiceMongodb implements WordServiceInterface
 {
+    public function getFirstN(Model $model, int $count = 21): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        $model->setConnection('mongodb');
+        return $model::query()->orderBy('id')->paginate($count);
+    }
+
     public function lookUp(Model $model, string $text, int $resultsBefore = 20, int $resultsAfter = 20): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $model->setConnection('mongodb');

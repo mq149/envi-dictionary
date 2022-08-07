@@ -11,11 +11,9 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class VietnameseController extends Controller
 {
-    private WordServiceInterface $wordService;
 
-    public function __construct(WordServiceInterface $wordService)
+    public function __construct(private WordServiceInterface $wordService)
     {
-        $this->wordService = $wordService;
     }
 
     /**
@@ -26,7 +24,11 @@ class VietnameseController extends Controller
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        $vietnameseWords = $this->wordService->lookUp(new VietnameseWord(), $request->get('text', ''));
+        if ($request->has('text')) {
+            $vietnameseWords = $this->wordService->lookUp(new VietnameseWord(), $request->get('text', ''));
+        } else {
+            $vietnameseWords = $this->wordService->getFirstN(new VietnameseWord());
+        }
         return WordResource::collection($vietnameseWords);
     }
 

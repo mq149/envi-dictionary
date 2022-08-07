@@ -3,9 +3,9 @@
 namespace App\Services\Interfaces;
 
 use App\Models\BaseModels\Word;
-use Illuminate\Database\Eloquent\Model;
 
 interface WordServiceInterface
 {
+    public function getFirstN(Word $model, int $count = 21): \Illuminate\Contracts\Pagination\LengthAwarePaginator;
     public function lookUp(Word $model, string $text, int $resultsBefore = 10, int $resultsAfter = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator;
 }

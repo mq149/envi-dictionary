@@ -26,7 +26,11 @@ class EnglishController extends Controller
      */
     public function index(Request $request)
     {
-        $englishWords = $this->wordService->lookUp(new EnglishWord(), $request->get('text', ''));
+        if ($request->has('text')) {
+            $englishWords = $this->wordService->lookUp(new EnglishWord(), $request->get('text', ''));
+        } else {
+            $englishWords = $this->wordService->getFirstN(new EnglishWord());
+        }
         return WordResource::collection($englishWords);
     }
 
