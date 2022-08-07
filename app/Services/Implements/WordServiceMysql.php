@@ -8,6 +8,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class WordServiceMysql implements WordServiceInterface
 {
+    public function getFirstN(Model $model, int $count = 21): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        return $model::query()->orderBy('id')->paginate($count);
+    }
+
     public function lookUp(Model $model, string $text, int $resultsBefore = 20, int $resultsAfter = 20): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         if ($text == '') {

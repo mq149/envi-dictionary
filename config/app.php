@@ -166,7 +166,7 @@ return [
          * Package Service Providers...
          */
         \Jenssegers\Mongodb\MongodbServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
+        \Barryvdh\Debugbar\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -232,7 +232,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         // Dev dependencies
-        'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
     ],
 
 ];
