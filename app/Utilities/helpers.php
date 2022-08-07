@@ -7,6 +7,13 @@ if (!function_exists('in_debug_mode')) {
     }
 }
 
+if (!function_exists('in_production')) {
+    function in_production(): bool
+    {
+        return config('app.env') == 'production';
+    }
+}
+
 if (!function_exists('is_using_mongodb')) {
     function is_using_mongodb(): bool
     {

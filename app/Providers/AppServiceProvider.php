@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if(in_debug_mode()) {
+        if(in_production()) {
             URL::forceScheme('https');
         }
     }
