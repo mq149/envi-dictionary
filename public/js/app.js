@@ -19750,7 +19750,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
- // import {devDependencies} from "../../../../package.json";
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -19758,6 +19757,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     MeaningComponent: _MeaningComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: {
+    autoLookUp: Boolean,
     laravelVersion: String,
     phpVersion: String
   },
@@ -19822,17 +19822,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                console.log(_this3.lookUpWord);
                 _useDictionary2 = (0,_composables_dictionary__WEBPACK_IMPORTED_MODULE_2__["default"])(_this3.language), words = _useDictionary2.words, lookUpFromDictionary = _useDictionary2.lookUpFromDictionary;
-                _context3.next = 4;
+                _context3.next = 3;
                 return lookUpFromDictionary(_this3.lookUpWord);
 
-              case 4:
+              case 3:
                 _this3.words = words;
 
                 _this3.$forceUpdate();
 
-              case 6:
+              case 5:
               case "end":
                 return _context3.stop();
             }
@@ -19841,20 +19840,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     switchLocale: function switchLocale(locale) {
-      console.log("Setting locale to: ".concat(locale));
       this.$lang().setLocale(locale);
       this.$forceUpdate();
     },
     focusMiddleWordInList: function focusMiddleWordInList() {
       var wordItems = document.getElementById('word-list').children;
       var middleWord = wordItems.item(Math.floor(wordItems.length / 2) - 1);
-      console.log(middleWord);
       middleWord.scrollIntoView({
         block: "center"
       });
-    },
-    print: function print() {
-      console.log('input stopped');
     }
   },
   data: function data() {
@@ -19866,7 +19860,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   mounted: function mounted() {
-    this.getDictionaryWords(); // console.log(devDependencies)
+    console.log('Auto look up: ' + this.autoLookUp);
+    this.getDictionaryWords();
   },
   watch: {
     language: function language(newVal, oldVal) {
@@ -19877,11 +19872,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                console.log("Switched from ".concat(oldVal, " to ").concat(newVal));
-                _context4.next = 3;
+                _context4.next = 2;
                 return _this4.getDictionaryWords();
 
-              case 3:
+              case 2:
               case "end":
                 return _context4.stop();
             }
@@ -19897,13 +19891,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                console.log("Lookup word is: ".concat(newVal));
-                _context5.next = 3;
+                if (_this5.autoLookUp) {
+                  _context5.next = 2;
+                  break;
+                }
+
+                return _context5.abrupt("return");
+
+              case 2:
+                _context5.next = 4;
                 return _this5.lookUp().then(function () {
                   _this5.focusMiddleWordInList();
                 });
 
-              case 3:
+              case 4:
               case "end":
                 return _context5.stop();
             }
@@ -20106,7 +20107,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, null, 40
   /* PROPS, HYDRATE_EVENTS */
   , _hoisted_8), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.lookUpWord, void 0, {
-    lazy: true,
     trim: true
   }]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",

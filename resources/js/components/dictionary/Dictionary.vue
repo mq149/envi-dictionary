@@ -24,7 +24,7 @@
                                   border border-stale-200 rounded"
                            type="text"
                            :placeholder="__('dictionary.look_up_placeholder')"
-                           v-model.lazy.trim="lookUpWord"
+                           v-model.trim="lookUpWord"
                            @keyup.enter="lookUp">
                     <button type="button"
                             class="w-1/12 p-2
@@ -66,7 +66,6 @@ import WordListComponent from "./WordListComponent";
 import MeaningComponent from "./MeaningComponent";
 import useDictionary from "../../composables/dictionary";
 import {version, ref} from "vue";
-// import {devDependencies} from "../../../../package.json";
 
 export default {
     components: {
@@ -74,6 +73,7 @@ export default {
         MeaningComponent
     },
     props: {
+        autoLookUp: Boolean,
         laravelVersion: String,
         phpVersion: String
     },
@@ -93,25 +93,19 @@ export default {
             this.selectedWord = this.words[0] || {}
         },
         async lookUp() {
-            console.log(this.lookUpWord)
             const {words, lookUpFromDictionary} = useDictionary(this.language)
             await lookUpFromDictionary(this.lookUpWord)
             this.words = words
             this.$forceUpdate()
         },
         switchLocale(locale) {
-            console.log(`Setting locale to: ${locale}`)
             this.$lang().setLocale(locale)
             this.$forceUpdate()
         },
         focusMiddleWordInList() {
             const wordItems = document.getElementById('word-list').children
             const middleWord = wordItems.item(Math.floor(wordItems.length / 2) - 1)
-            console.log(middleWord)
             middleWord.scrollIntoView({block: "center"})
-        },
-        print() {
-            console.log('input stopped')
         }
     },
     data() {
@@ -123,16 +117,17 @@ export default {
         }
     },
     mounted() {
+        console.log('Auto look up: ' + this.autoLookUp)
         this.getDictionaryWords()
-        // console.log(devDependencies)
     },
     watch: {
         async language(newVal, oldVal) {
-            console.log(`Switched from ${oldVal} to ${newVal}`)
             await this.getDictionaryWords()
         },
         async lookUpWord(newVal, oldVal) {
-            console.log(`Lookup word is: ${newVal}`)
+            if (!this.autoLookUp) {
+                return
+            }
             await this.lookUp().then(() => {
                 this.focusMiddleWordInList()
             })

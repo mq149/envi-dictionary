@@ -4,6 +4,7 @@
     <div class="h-full">
 {{--        <router-view/>--}}
         <dictionary
+            :auto-look-up="{{config('dictionary.auto_look_up')}}"
             :laravel-version="'{{Illuminate\Foundation\Application::VERSION}}'"
             :php-version="'{{PHP_VERSION}}'">
         </dictionary>
