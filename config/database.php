@@ -93,8 +93,8 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'dsn' => env('DB_URI', 'mongodb://localhost:27017'),
-            'database' => env('DB_DATABASE', 'envi_dictionary'),
+            'dsn' => env('MONGO_URI', 'mongodb://localhost:27017'),
+            'database' => env('MONGO_DATABASE', 'envi_dictionary'),
         ],
     ],
 
